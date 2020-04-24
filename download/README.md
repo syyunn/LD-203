@@ -5,5 +5,5 @@
     (or)
     pip install -r requirements.txt
 
-## Run `main.sh` to initiate download
+## Initiate download
     source main.sh
