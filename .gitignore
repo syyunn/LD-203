@@ -1,3 +1,4 @@
 .idea
 download/raw_data/*
 !download/raw_data/unzip.sh
+!download/raw_data/README.md
