@@ -16,3 +16,6 @@ Collect/Parse/Build Lobbying Contribution table on current lobby_database with p
     - Either one of LD-1 or LD-2 must be preceded before filing the first LD-203 report.
 
     - Lobbyist ID numbers, like the registrant ID number, is unique to each individual lobbyist and will stay assigned to that lobbyist though they become employed by another registrants.
+
+### Data Constraints
+- If filer type is **"O"**, no lobbyists name appears.  
