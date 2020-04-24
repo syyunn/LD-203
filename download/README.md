@@ -6,4 +6,4 @@
     pip install -r requirements.txt
 
 ## Run main.sh to initiate download
-    ./main.sh
+    source main.sh
