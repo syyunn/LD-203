@@ -3,6 +3,7 @@ import sys
 import argparse
 import logging
 import urllib.request
+import progressbar
 
 log = logging.getLogger("my-logger")
 log.setLevel(logging.DEBUG)
@@ -11,6 +12,22 @@ handler = logging.StreamHandler(sys.stdout)
 formatter = logging.Formatter('[%(levelname)s] %(message)s')
 handler.setFormatter(formatter)
 log.addHandler(handler)
+
+
+class Progressbar:
+    def __init__(self):
+        self.pbar = None
+
+    def __call__(self, block_num, block_size, total_size):
+        if not self.pbar:
+            self.pbar=progressbar.ProgressBar(maxval=total_size)
+            self.pbar.start()
+
+        downloaded = block_num * block_size
+        if downloaded < total_size:
+            self.pbar.update(downloaded)
+        else:
+            self.pbar.finish()
 
 
 def parse_arguments():
@@ -36,32 +53,28 @@ def main(args):
     url_prefix = 'https://disclosurespreview.house.gov/data/LC/'
     half_year_suffixes = ['MidYear', 'YearEnd']
     years = list(range(args.year1, args.year2+1))
-    print(years)
+    log.info("Target years to download: \n {}".format(str(years)))
 
     # Make data dir where to download files
     parent_dir = os.path.dirname(os.path.realpath(__file__))
     dir_name = "raw_data"
-    dir_to_create = os.path.join(parent_dir, dir_name)
+    download_dir = os.path.join(parent_dir, dir_name)
 
     try:
-        os.mkir(dir_to_create)
-        print("Created ")
+        os.mkdir(download_dir)
+        log.info("Created directory where to download raw data: \n {}".format(download_dir))
     except OSError as error:
-        print(error)
+        # log.info(error)
+        log.info("Directory to download raw data: \n {}".format(download_dir))
 
-    log.info("Downloading following urls ... ")
-    urls = []
+    # urls = []
     for year in years:
         for half_year_suffix in half_year_suffixes:
             filename = str(year) + '_' + half_year_suffix + url_suffix
-
-            # download_path =
+            download_path = os.path.join(download_dir, filename)
             url = url_prefix + filename
-            urls.append(url)
-            print(url)
-
-    # filenmae = "test.xml"
-    # urllib.request.urlretrieve(url, filenmae)
+            log.info("Downloading the url \n \"{}\" to \n {}".format(url, download_path))
+            urllib.request.urlretrieve(url, download_path, Progressbar())
 
 
 if __name__ == "__main__":
