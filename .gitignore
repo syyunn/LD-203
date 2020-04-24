@@ -1,2 +1,3 @@
 .idea
-download/raw_data
+download/raw_data/*
+!download/raw_data/unzip.sh
