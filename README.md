@@ -17,5 +17,37 @@ Collect/Parse/Build Lobbying Contribution table on current lobby_database with p
 
     - Lobbyist ID numbers, like the registrant ID number, is unique to each individual lobbyist and will stay assigned to that lobbyist though they become employed by another registrants.
 
+### Data Attributes(Columns)
+filerType: { "O", "L" }
+organizationName: str
+_lobbyistName:
+    lobbyistPrefix
+    lobbyistFirstName
+    lobbyistMiddleName
+    lobbyistLastName
+    lobbyistSuffix
+zipext
+contactName
+senateRegID
+houseRegID
+reportYear
+reportType
+amendment
+comments
+signedDate
+certifiedcontent
+noContributions
+pacs
+contributions
+
 ### Data Constraints
-- If filer type is **"O"**, no lobbyists name appears.  
+1. There's no lobbyist name if filerType is "O"
+```python
+    if filerType == "L":
+        lobbyistName is not None
+    elif filerType == "O:
+        lobbyistName is None
+```
+
+2. senateRegID & houseRegID are Organization's, not Lobbyist's (even if filerType = "L")
+
